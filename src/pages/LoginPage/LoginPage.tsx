@@ -2,9 +2,22 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import LoginForm from "../../components/LoginForm";
 import SocialLoginButton from "../../components/SocialLoginButton";
-
+import { useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const listenAuth = onAuthStateChanged(getAuth(), (user) => {
+    if (user) {
+      navigate('/posts')
+    }
+
+    return () => {
+      listenAuth();
+    }
+  })
+
   return (
     <div className="flex flex-row justify-center items-center">
       <div className="w-full flex-column">

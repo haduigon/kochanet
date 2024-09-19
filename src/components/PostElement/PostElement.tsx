@@ -1,5 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchPost } from '../PostList/PostList';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { fetchPost2 } from '../PostList/PostList';
 
 type Props = {
   data2: {
@@ -10,14 +13,52 @@ type Props = {
   };
 };
 
+const deletePost = async (postId: number) => {
+  console.log(postId, 'post element delete post func');
+
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${postId}`,
+    {
+      method: 'DELETE',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to delete post');
+  }
+
+  const result = await response.json();
+  // console.log('Department deleted:', result);
+
+  return postId;
+};
+
 const PostElement: React.FC<Props> = ({ data2 }) => {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['post', '1/comments'],
-    queryFn: fetchPost,
-    refetchInterval: 60000,
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: deletePost,
+    onSettled: (data: any, error: any, variables: any, context: any) => {
+      // console.log(data, error, variables, context, 'datasettled post elem');
+      queryClient.setQueryData(
+        ['post'],
+        [
+          {
+            body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+            id: 1,
+            title:
+              'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
+            userId: 1,
+          },
+        ]
+      );
+    },
   });
 
-  console.log(data, 'data post element');
+
+  const handleDelete = () => {
+    mutation.mutate(data2.id);
+  };
 
   return (
     <div>
@@ -34,8 +75,11 @@ const PostElement: React.FC<Props> = ({ data2 }) => {
             {data2.body}
           </div>
 
-          <button className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600">
-            Small Blue Button
+          <button
+            onClick={handleDelete}
+            className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+          >
+            Delete post
           </button>
         </div>
       </div>

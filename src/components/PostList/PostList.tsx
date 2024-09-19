@@ -1,13 +1,22 @@
 import { useEffect } from 'react';
 import PostElement from '../PostElement';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 export const fetchPost = async ({ queryKey }: any) => {
   const [_key, theEnd] = queryKey;
 
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${theEnd}`
+    `https://jsonplaceholder.typicode.com/posts/`
+  );
+  if (!response.ok) throw new Error('Network response was not ok');
+  return response.json();
+};
+export const fetchPost2 = async () => {
+  // const [_key, theEnd] = queryKey;
+
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/`
   );
   if (!response.ok) throw new Error('Network response was not ok');
   return response.json();
@@ -15,17 +24,26 @@ export const fetchPost = async ({ queryKey }: any) => {
 
 const PostList = () => {
   const { data, error, isLoading } = useQuery({
-    queryKey: ['post', '?_limit=10&_start=10'],
+    queryKey: ['post'],
     queryFn: fetchPost,
-    refetchInterval: 60000,
+    // refetchInterval: 60000,
   });
 
-  // console.log(data, 'data');
+  const data2 = useQuery({ queryKey: ['post']})
+
+  useEffect(() => {
+    // fetchPost2().then(res => console.log(res, 'just fetch'))  
+  }, [])
+
+    const queryClient = useQueryClient();
+
+      const cachedPosts = queryClient.getQueryData(['post']);
+
   useEffect(() => {
     if (data) {
-      console.log('Data:', data);
+      console.log('Data:', data2);
     }
-  }, [data]);
+  }, [data, cachedPosts]);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

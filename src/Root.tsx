@@ -10,7 +10,9 @@ import PostPage from './pages/PostPage';
 export const Root = () => (
   <HashRouter>
     <Routes>
-      <Route path='/' element={<App />} />
+      <Route path='/' element={<App />} >
+        <Route index element={<LoginPage/>}/>
+      </Route>
     </Routes>
   </HashRouter>
 )

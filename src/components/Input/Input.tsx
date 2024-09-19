@@ -9,7 +9,7 @@ type Props = {
 const Input: React.FC<Props> = ({ name, addition, type = "text" }) => {
 
   return (
-         <div >
+         <div>
       <div className="flex items-center justify-between">
         <label htmlFor={name} className="block text-left font-medium leading-6 text-gray-900">{name}</label>
         <div className="block text-right font-medium leading-6 text-gray-900">{addition}</div>

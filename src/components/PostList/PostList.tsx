@@ -61,7 +61,7 @@ const PostList = () => {
         }
       )}
 
-      <div>
+      <div className="mt-4">
         <button
           onClick={handlePageBack}
           className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"

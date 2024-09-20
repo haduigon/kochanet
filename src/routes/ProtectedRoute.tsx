@@ -33,9 +33,6 @@ const ProtectedRoute: React.FC<Props> = ({ children }) => {
 
 export default ProtectedRoute;
 
-
-
-
 // /* eslint-disable */
 // import { useEffect, useState } from "react";
 // import { getAuth, onAuthStateChanged } from 'firebase/auth';

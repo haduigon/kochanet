@@ -4,7 +4,6 @@ import {
 import PostElement from '../PostElement';
 import React from 'react';
 import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
-import { useQueryClient } from '@tanstack/react-query';
 
 const PostList = () => {
 

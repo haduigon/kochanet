@@ -13,7 +13,6 @@ export const useAppData = (urlEnd: string = `?_limit=10&_start=0`) => {
       {
         queryKey: ['users'],
         queryFn: fetchUsers,
-        // staleTime: 300000,
       },
       {
         queryKey: ['userPosts', urlEnd],
@@ -101,7 +100,29 @@ export const createPost = async () => {
   }
 
   const resp = await response.json();
-  console.log(resp);
+  // console.log(resp);
+  
+  return resp;
+};
+
+export const patchPost = async (value: string) => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts/4', {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: value,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error('Failed to delete post');
+  }
+
+  const resp = await response.json();
+  console.log(resp, 'patchpost');
   
   return resp;
 };

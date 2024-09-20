@@ -8,20 +8,29 @@ import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../help
 const PostList = () => {
 
   const setCurrentPage = useSetCustomParam()
-  const page22 = useGetCustomParameter();
-  const currentPage = page22('page') || 1;
+  const page = useGetCustomParameter();
+  const currentPage = page('page') || 1;
+  const currentUser = page('userId') || 0;
 
   useEffect(() => {
     setCurrentPage('page', '1');
+    setCurrentPage('userId', '0');
   }, []);
 
-  const results = useAppData(`?_limit=10&_start=${10 * (+currentPage - 1)}`)
+  const results = useAppData(
+    +currentUser === 0
+      ? `?_limit=10&_start=${10 * (+currentPage - 1)}`
+      : `?userId=${currentUser}`
+  );
 
   const [posts] = results;
   
   function handlePage() {
     setCurrentPage('page', String(+currentPage + 1))
   }
+
+  console.log(currentUser, 'user in list');
+  
 
   if (posts.isLoading) return <p>Loading...</p>;
   if (posts.error) return <p>Error: {posts.error.message}</p>;

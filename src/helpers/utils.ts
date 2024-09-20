@@ -4,18 +4,22 @@ import { useQueries } from '@tanstack/react-query';
 export const useAppData = (
   urlEnd: string = `?_limit=10&_start=0`
 ) => {
-  console.log(urlEnd, 'urlEnd utils');
+  // console.log(urlEnd, 'urlEnd utils');
   
   return useQueries({
     queries: [
       {
-        queryKey: ['post', urlEnd],
+        queryKey: ['posts', urlEnd],
         queryFn: fetchPost,
         refetchInterval: 60000,
       },
       {
         queryKey: ['users'],
         queryFn: fetchUsers,
+      },
+      {
+        queryKey: ['userPosts', urlEnd],
+        queryFn: fetchUsersPosts,
       },
     ],
   });
@@ -72,10 +76,11 @@ export const deletePost = async (postId: number) => {
   return postId;
 };
 
-export const fetchUsersPosts = async (userId: string) => {
+export const fetchUsersPosts = async ({ queryKey }: any) => {
+  const [_key, userId] = queryKey;
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
   );
   if (!response.ok) throw new Error('Network response was not ok');
   return response.json();
-}
+};

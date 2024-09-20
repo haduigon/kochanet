@@ -12,16 +12,24 @@ type Props = {
 };
 
 const PostElement: React.FC<Props> = ({ data2 }) => {
-  const page22 = useGetCustomParameter();
-  const currentPage = page22('page') || 1;
+  const page = useGetCustomParameter();
+  const currentPage = page('page') || 1;
   const queryClient = useQueryClient();
+  const currentUser = page('userId') || 0;
+
 
   const mutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
+      console.log('success');
+      const secondKey = +currentUser > 0 
+        ? `?userId=${currentUser}`
+        : `?_limit=10&_start=${(+currentPage - 1) * 10}`
       queryClient.setQueryData(
-        ['post', `?_limit=10&_start=${+currentPage * 10}`],
+        ['posts', secondKey],
         (prevState: any[]) => {
+          console.log(prevState);
+          
           return prevState.filter(elem => elem.id !== data2.id);
         }
       );

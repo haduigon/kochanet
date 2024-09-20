@@ -1,17 +1,23 @@
-import { useAppData, fetchUsers } from "../../helpers/utils";
+import { useEffect, useState } from "react";
+import { useAppData, useGetCustomParameter, useSetCustomParam } from "../../helpers/utils";
+import { useQuery } from "@tanstack/react-query";
 
 const Navbar = () => {
+  // const [selectedUserId, setSelectedUserId] = useState(0);
 
   const users = useAppData();
-  console.log(users[1]);
-  
+
+  const setUserId = useSetCustomParam();
+
   function handleSelect(value: string) {
-    console.log(value);
-    
+    // console.log(posts, 'results');
+    // setSelectedUserId(+value)
+    setUserId('userId', value);
   }
 
   if (users[1].isLoading) return <p>Loading...</p>;
   if (users[1].error) return <p>Error: {users[1].error.message}</p>;
+  
   return (
         <nav className="bg-blue-600 p-4">
       <div className="container mx-auto flex justify-between items-center">

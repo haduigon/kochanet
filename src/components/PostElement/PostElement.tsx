@@ -47,7 +47,10 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
     removePost(data2.id);
   };
 
-  const author = queryClient.getQueryData<{ id: number; name: string }[]>([
+  if (users[1].isLoading) return <p>Loading...</p>;
+  if (users[1].error) return <p>Error: {users[1].error.message}</p>;
+
+    const author = queryClient.getQueryData<{ id: number; name: string }[]>([
     'users',
   ]);
   const copy: { id: number; name: string; username: string }[] = [
@@ -56,9 +59,6 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
 
   const author3: { name: string; username: string; id: number } | undefined =
     copy.find((elem: { id: number }) => elem.id === data2.userId);
-
-  if (users[1].isLoading) return <p>Loading...</p>;
-  if (users[1].error) return <p>Error: {users[1].error.message}</p>;
   return (
     <div>
       <div className=""></div>

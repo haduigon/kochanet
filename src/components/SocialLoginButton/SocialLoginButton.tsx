@@ -2,7 +2,7 @@ import { GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider } from 'fi
 import { loginWithGoogle } from '../../firebase/firebase';
 
 type Props = {
-  name?: string
+  name: 'google' | 'facebook' | 'github'
 }
 
 const SocialLoginButton: React.FC<Props> = ({ name }) => {
@@ -25,7 +25,7 @@ const SocialLoginButton: React.FC<Props> = ({ name }) => {
   // }
 
   function googleLogin() {
-    loginWithGoogle(providers['google'])
+    loginWithGoogle(providers[name] )
   }
   return (
     <div>
@@ -34,7 +34,10 @@ const SocialLoginButton: React.FC<Props> = ({ name }) => {
         className="flex w-full justify-center rounded-lg bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ring-1 ring-inset ring-gray-300"
         onClick={googleLogin}
       >
-        {name}
+        <div className="flex-column">
+          <div>Login with</div>
+        <div>{name}</div>
+        </div>
       </button>
       </div>
   )

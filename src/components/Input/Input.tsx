@@ -15,10 +15,10 @@ const Input: React.FC<Props> = ({
   type = 'text',
   onChange = () => {},
 }) => {
-  const [localValue, setLocalValue] = useState(value);
+  // const [localValue, setLocalValue] = useState(value);
 
   function handleChange(event: string) {
-    setLocalValue(event);
+    // setLocalValue(event);
     onChange(event);
   }
 
@@ -41,7 +41,7 @@ const Input: React.FC<Props> = ({
           name={name}
           type={type}
           required
-          value={localValue}
+          value={value}
           onChange={(event) => handleChange(event.currentTarget.value)}
           className="block w-full rounded-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm sm:leading-6"
         />

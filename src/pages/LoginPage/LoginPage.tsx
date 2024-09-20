@@ -23,9 +23,9 @@ const LoginPage = () => {
       <div className="w-full flex-column">
         <div className="w-full">
           <div className="flex flex-row space-x-6 mt-2 ml-2 mr-2 sm:mx-auto  sm:max-w-sm  items-center justify-center">
-             <SocialLoginButton name="Login with Google" />
-             <SocialLoginButton name="Login with Facebook" />
-             <SocialLoginButton name="Login with Github" />
+             <SocialLoginButton name="google" />
+             <SocialLoginButton name="facebook" />
+             <SocialLoginButton name="github" />
          </div>
         </div>
         <div className="w-full">

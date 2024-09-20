@@ -1,8 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchPost } from '../../helpers/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-// import { fetchPost2 } from '../PostList/PostList';
+import { useGetCustomParameter } from '../../helpers/utils';
 
 type Props = {
   data2: {
@@ -14,7 +11,7 @@ type Props = {
 };
 
 const deletePost = async (postId: number) => {
-  console.log(postId, 'post element delete post func');
+  // console.log(postId, 'post element delete post func');
 
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${postId}`,
@@ -27,22 +24,22 @@ const deletePost = async (postId: number) => {
     throw new Error('Failed to delete post');
   }
 
-  const result = await response.json();
-  // console.log('Department deleted:', result);
+  // const result = await response.json();
 
   return postId;
 };
 
 const PostElement: React.FC<Props> = ({ data2 }) => {
+  const page22 = useGetCustomParameter();
+  const currentPage = page22('page') || 1;
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
       queryClient.setQueryData(
-        ['post', '?_limit=10&_start=10'],
+        ['post', `?_limit=10&_start=${+currentPage * 10}`],
         (prevState: any[]) => {
-          // console.log(prevState.filter(elem => elem.id !== data2.id), 'prevstate');
           return prevState.filter(elem => elem.id !== data2.id);
         }
       );

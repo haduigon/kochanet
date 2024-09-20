@@ -33,7 +33,15 @@ const PostList = () => {
   const [posts] = results;
 
   function handlePage() {
-    setCurrentPage('page', String(+currentPage + 1));
+    if (+currentPage < 10) {
+      setCurrentPage('page', String(+currentPage + 1));
+    }
+  }
+  
+  function handlePageBack() {
+    if (+currentPage > 1) {
+      setCurrentPage('page', String(+currentPage - 1));
+    }   
   }
 
   if (posts.isLoading) return <p>Loading...</p>;
@@ -55,8 +63,14 @@ const PostList = () => {
 
       <div>
         <button
-          onClick={handlePage}
+          onClick={handlePageBack}
           className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+        >
+          Prev page
+        </button>
+        <button
+          onClick={handlePage}
+          className=" ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
         >
           Next page
         </button>

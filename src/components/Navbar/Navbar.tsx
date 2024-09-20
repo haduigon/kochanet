@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { useAppData, useGetCustomParameter, useSetCustomParam, createPost } from "../../helpers/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
   const users = useAppData();
@@ -20,7 +20,7 @@ const Navbar = () => {
     const { mutateAsync: addPost } = useMutation({
     mutationFn: createPost,
     onSuccess: () => {
-      console.log('added succsefully');
+      // console.log('added succsefully');
 
       const secondKey = +currentUser > 0
         ? `?userId=${currentUser}`

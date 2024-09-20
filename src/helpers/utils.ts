@@ -105,11 +105,13 @@ export const createPost = async () => {
   return resp;
 };
 
-export const patchPost = async (value: string) => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts/4', {
+export const patchPost = async ({ name, value, id }: {
+  name: 'title' | 'body'; value: string, id: string
+}) => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({
-      title: value,
+      [name]: value,
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',

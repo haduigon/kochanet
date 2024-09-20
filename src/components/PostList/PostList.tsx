@@ -14,7 +14,7 @@ const PostList = () => {
   const page = useGetCustomParameter();
   const currentPage = page('page') || 1;
   const currentUser = page('userId') || 0;
-    const { state, dispatch } = useContext(StateContext);
+    const { state } = useContext(StateContext);
 
   useEffect(() => {
     setCurrentPage('page', '1');

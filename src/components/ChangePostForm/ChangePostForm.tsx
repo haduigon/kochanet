@@ -35,7 +35,11 @@ const ChangePostForm= () => {
 
   const handlePatch = async () => {
 
-    patchPost2(title)
+    patchPost2({
+      id: `${state.selectedPost.id}`,
+      name: 'title',
+      value: title,
+    })
     dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false });
     
 

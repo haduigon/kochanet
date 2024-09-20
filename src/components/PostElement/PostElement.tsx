@@ -1,8 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAppData, useGetCustomParameter, useSetCustomParam } from '../../helpers/utils';
-import { deletePost, createPost } from '../../helpers/utils';
-import { useContext, useState } from 'react';
-import ChangePostForm from '../ChangePostForm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAppData, useGetCustomParameter } from '../../helpers/utils';
+import { deletePost } from '../../helpers/utils';
+import { useContext } from 'react';
 import { StateContext } from '../../context/AppContext';
 import { ACTIONS } from '../../helpers/utils';
 
@@ -22,17 +21,12 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
   const currentUser = page('userId') || 0;
   const users = useAppData();
 
-  const [showM, setShowM] = useState(false)
-
-
-  const { state, dispatch } = useContext(StateContext);
+  const { dispatch } = useContext(StateContext);
 
 
   function handleModal() {
     dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: true });
     dispatch({ type: ACTIONS.SET_SELECTED_POST, payload: data2 });
-    // customAction('modal', 'true');
-    // setShowM(true)
   }
   const {mutateAsync: removePost} = useMutation({
     mutationFn: deletePost,
@@ -62,7 +56,6 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
   if (users[1].error) return <p>Error: {users[1].error.message}</p>;
   return (
     <div>
-      {/* {showM && <ChangePostForm data2={data2}/>} */}
       <div className=""></div>
       <div className="mt-2 flex items-center justify-between">
         <div className="flex-column items-center justify-between w-full rounded-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">

@@ -15,7 +15,7 @@ const PostList = () => {
     setCurrentPage('page', '1');
   }, []);
 
-  const results = useAppData(`${currentPage}`)
+  const results = useAppData(`?_limit=10&_start=${10 * (+currentPage - 1)}`)
 
   const [posts] = results;
   

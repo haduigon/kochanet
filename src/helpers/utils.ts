@@ -1,11 +1,15 @@
 import { useSearchParams } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 
-export const useAppData = (currentPage: string = '1') => {
+export const useAppData = (
+  urlEnd: string = `?_limit=10&_start=0`
+) => {
+  console.log(urlEnd, 'urlEnd utils');
+  
   return useQueries({
     queries: [
       {
-        queryKey: ['post', `?_limit=10&_start=${+currentPage * 10}`],
+        queryKey: ['post', urlEnd],
         queryFn: fetchPost,
         refetchInterval: 60000,
       },
@@ -67,3 +71,11 @@ export const deletePost = async (postId: number) => {
 
   return postId;
 };
+
+export const fetchUsersPosts = async (userId: string) => {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
+  );
+  if (!response.ok) throw new Error('Network response was not ok');
+  return response.json();
+}

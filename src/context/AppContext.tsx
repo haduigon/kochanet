@@ -13,11 +13,13 @@ type Post = {
 type Action = { type: ACTIONS.SET_SHOW_MODAL, payload: boolean }
 | {type: ACTIONS.SET_SELECTED_POST, payload: Post}
 | {type: ACTIONS.SET_ERROR_TEXT, payload: string}
+| {type: ACTIONS.SET_NEW_POST, payload: boolean}
 
 interface Data {
   showModal: boolean,
   selectedPost: Post,
   errorText: string,
+  newPost: boolean,
 }
 
 function reducer(state: Data, action: Action) {
@@ -40,6 +42,18 @@ function reducer(state: Data, action: Action) {
         errorText: action.payload,
       }
     }
+    case ACTIONS.SET_NEW_POST: {
+      return {
+        ...state,
+        newPost: action.payload,
+      }
+    }
+    case ACTIONS.SET_ERROR_TEXT: {
+      return {
+        ...state,
+        errorText: action.payload,
+      }
+    }
   }
 }
 
@@ -52,7 +66,8 @@ const initialState: State = {
   state: {
     showModal: false,
     selectedPost: {} as Post,
-    errorText: 'error',
+    errorText: '',
+    newPost: false,
   },
   dispatch: () => {}
 }

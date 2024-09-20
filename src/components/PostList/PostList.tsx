@@ -1,21 +1,22 @@
-import {
-  useContext,
-  useEffect,
-} from 'react';
+import { useContext, useEffect } from 'react';
 import PostElement from '../PostElement';
 import React from 'react';
-import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
+import {
+  useSetCustomParam,
+  useGetCustomParameter,
+  useAppData,
+} from '../../helpers/utils';
 import ChangePostForm from '../ChangePostForm';
 import { StateContext } from '../../context/AppContext';
-import ErrorModal from '../ErrorModal';
+// import ErrorModal from '../ErrorModal';
+import CreatePostForm from '../CreatePostForm';
 
 const PostList = () => {
-
-  const setCurrentPage = useSetCustomParam()
+  const setCurrentPage = useSetCustomParam();
   const page = useGetCustomParameter();
   const currentPage = page('page') || 1;
   const currentUser = page('userId') || 0;
-    const { state } = useContext(StateContext);
+  const { state } = useContext(StateContext);
 
   useEffect(() => {
     setCurrentPage('page', '1');
@@ -29,9 +30,9 @@ const PostList = () => {
   );
 
   const [posts] = results;
- 
+
   function handlePage() {
-    setCurrentPage('page', String(+currentPage + 1))
+    setCurrentPage('page', String(+currentPage + 1));
   }
 
   if (posts.isLoading) return <p>Loading...</p>;
@@ -39,7 +40,8 @@ const PostList = () => {
   return (
     <div>
       {state.showModal && <ChangePostForm />}
-      {state.errorText.length > 0 && <ErrorModal />}
+      {state.newPost && <CreatePostForm />}
+      {state.errorText.length > 0 && <CreatePostForm />}
       {posts.data.map(
         (post: { body: string; id: number; title: string; userId: number }) => {
           return (

@@ -62,7 +62,7 @@ export const deletePost = async (postId: number) => {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${postId}`,
     {
-      method: 'DELETE',
+      method: 'GET',
     }
   );
 
@@ -82,13 +82,21 @@ export const fetchUsersPosts = async ({ queryKey }: any) => {
   return response.json();
 };
 
-export const createPost = async () => {
+export const createPost = async ({
+  title,
+  body,
+}: {
+  title: string;
+  body: string;
+  id: string;
+}) => {
   const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
     method: 'POST',
     body: JSON.stringify({
-      title: 'foo',
-      body: 'bar',
-      userId: 1,
+      title: title,
+      body: body,
+      userId: 101,
+      id: 101,
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
@@ -101,23 +109,31 @@ export const createPost = async () => {
 
   const resp = await response.json();
   // console.log(resp);
-  
+
   return resp;
 };
 
-export const patchPost = async ({ name, value, id }: {
-  name: 'title' | 'body'; value: string, id: string
+export const patchPost = async ({
+  name,
+  value,
+  id,
+}: {
+  name: 'title' | 'body';
+  value: string;
+  id: string;
 }) => {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      [name]: value,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  });
-
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${id}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({
+        [name]: value,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to delete post');
@@ -125,24 +141,32 @@ export const patchPost = async ({ name, value, id }: {
 
   const resp = await response.json();
   console.log(resp, 'patchpost');
-  
+
   return resp;
 };
 
-export const updatePost = async ({ title, body, id }: {
-  title: string; body: string, id: string
+export const updatePost = async ({
+  title,
+  body,
+  id,
+}: {
+  title: string;
+  body: string;
+  id: string;
 }) => {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      title: title,
-      body: body,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  });
-
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${id}`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({
+        title: title,
+        body: body,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to delete post');
@@ -150,7 +174,7 @@ export const updatePost = async ({ title, body, id }: {
 
   const resp = await response.json();
   console.log(resp, 'patchpost');
-  
+
   return resp;
 };
 
@@ -158,4 +182,5 @@ export enum ACTIONS {
   SET_SHOW_MODAL,
   SET_SELECTED_POST,
   SET_ERROR_TEXT,
+  SET_NEW_POST,
 }

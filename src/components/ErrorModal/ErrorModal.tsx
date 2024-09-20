@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import { StateContext } from "../../context/AppContext";
-import { ACTIONS } from "../../helpers/utils";
+import { useContext } from 'react';
+import { StateContext } from '../../context/AppContext';
+import { ACTIONS } from '../../helpers/utils';
 
 const ErrorModal = () => {
   const { state, dispatch } = useContext(StateContext);
   function onClose() {
-    dispatch({type: ACTIONS.SET_ERROR_TEXT, payload: ''})
+    dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: '' });
   }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -22,7 +22,7 @@ const ErrorModal = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ErrorModal;

@@ -1,15 +1,14 @@
 import { useContext, useState } from 'react';
 import Input from '../Input';
 import {
-  patchPost,
   useGetCustomParameter,
   ACTIONS,
-  updatePost,
+  createPost,
 } from '../../helpers/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { StateContext } from '../../context/AppContext';
 
-const ChangePostForm = () => {
+const CreatePostForm = () => {
   const { state, dispatch } = useContext(StateContext);
 
   const originalTitle = state.selectedPost.title;
@@ -22,51 +21,20 @@ const ChangePostForm = () => {
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
 
-  const detectChanges = () => {
-    let changedFields = [];
-
-    if (title !== originalTitle) {
-      changedFields.push('title');
-    }
-
-    if (body !== originalBody) {
-      changedFields.push('body');
-    }
-
-    return changedFields;
+  const newP = {
+    title: title,
+    body: body,
+    id: '101',
   };
-
-  const { mutateAsync: patchPost2 } = useMutation({
-    mutationFn: patchPost,
+  const { mutateAsync: addPost } = useMutation({
+    mutationFn: createPost,
     onSuccess: () => {
       const secondKey =
         +currentUser > 0
           ? `?userId=${currentUser}`
           : `?_limit=10&_start=${(+currentPage - 1) * 10}`;
       queryClient.setQueryData(['posts', secondKey], (prevState: any[]) => {
-        return prevState.map((post) =>
-          post.id === state.selectedPost.id ? { ...post, title, body } : post
-        );
-      });
-    },
-    onError: (error) => {
-      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: `${error}` });
-    },
-  });
-
-  const { mutateAsync: updatePost2 } = useMutation({
-    mutationFn: updatePost,
-    onSuccess: () => {
-      console.log('updated');
-
-      const secondKey =
-        +currentUser > 0
-          ? `?userId=${currentUser}`
-          : `?_limit=10&_start=${(+currentPage - 1) * 10}`;
-      queryClient.setQueryData(['posts', secondKey], (prevState: any[]) => {
-        return prevState.map((post) =>
-          post.id === state.selectedPost.id ? { ...post, title, body } : post
-        );
+        return [newP, ...prevState];
       });
     },
     onError: (error) => {
@@ -75,23 +43,9 @@ const ChangePostForm = () => {
   });
 
   const handlePatch = async () => {
-    console.log(detectChanges(), 'changes');
-    const changes = detectChanges();
+    addPost(newP);
 
-    if (changes.length === 1) {
-      patchPost2({
-        id: `${state.selectedPost.id}`,
-        name: changes[0] as 'title' | 'body',
-        value: changes[0] === 'title' ? title : body,
-      });
-    } else {
-      updatePost2({
-        id: `${state.selectedPost.id}`,
-        title: title,
-        body: body,
-      });
-    }
-    dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false });
+    dispatch({ type: ACTIONS.SET_NEW_POST, payload: false });
   };
 
   return (
@@ -114,9 +68,9 @@ const ChangePostForm = () => {
         onClick={handlePatch}
         className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
       >
-        Update post
+        Add post
       </button>
     </div>
   );
 };
-export default ChangePostForm;
+export default CreatePostForm;

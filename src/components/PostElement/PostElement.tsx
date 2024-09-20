@@ -23,23 +23,23 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
 
   const { dispatch } = useContext(StateContext);
 
-
   function handleModal() {
     dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: true });
     dispatch({ type: ACTIONS.SET_SELECTED_POST, payload: data2 });
   }
-  const {mutateAsync: removePost} = useMutation({
+  const { mutateAsync: removePost } = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      const secondKey = +currentUser > 0
-        ? `?userId=${currentUser}`
-        : `?_limit=10&_start=${(+currentPage - 1) * 10}`
-      queryClient.setQueryData(
-        ['posts', secondKey],
-        (prevState: any[]) => {          
-          return prevState.filter(elem => elem.id !== data2.id);
-        }
-      );
+      const secondKey =
+        +currentUser > 0
+          ? `?userId=${currentUser}`
+          : `?_limit=10&_start=${(+currentPage - 1) * 10}`;
+      queryClient.setQueryData(['posts', secondKey], (prevState: any[]) => {
+        return prevState.filter((elem) => elem.id !== data2.id);
+      });
+    },
+    onError: (error) => {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: `${error}` });
     },
   });
 
@@ -47,11 +47,16 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
     removePost(data2.id);
   };
 
-  const author = queryClient.getQueryData<{ id: number; name: string }[]>(['users']);
-  const copy: { id: number, name: string,username: string, }[] = [...author as []]
-  
-  const author3: { name: string, username: string, id: number } | undefined = copy.find((elem: { id: number }) => elem.id === data2.userId);
-  
+  const author = queryClient.getQueryData<{ id: number; name: string }[]>([
+    'users',
+  ]);
+  const copy: { id: number; name: string; username: string }[] = [
+    ...(author as []),
+  ];
+
+  const author3: { name: string; username: string; id: number } | undefined =
+    copy.find((elem: { id: number }) => elem.id === data2.userId);
+
   if (users[1].isLoading) return <p>Loading...</p>;
   if (users[1].error) return <p>Error: {users[1].error.message}</p>;
   return (
@@ -86,7 +91,6 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
           >
             Update post
           </button>
-
         </div>
       </div>
     </div>

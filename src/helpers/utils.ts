@@ -126,3 +126,8 @@ export const patchPost = async (value: string) => {
   
   return resp;
 };
+
+export enum ACTIONS {
+  SET_SHOW_MODAL,
+  SET_SELECTED_POST,
+}

@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAppData, useGetCustomParameter } from '../../helpers/utils';
+import { useAppData, useGetCustomParameter, useSetCustomParam } from '../../helpers/utils';
 import { deletePost, createPost } from '../../helpers/utils';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ChangePostForm from '../ChangePostForm';
+import { StateContext } from '../../context/AppContext';
+import { ACTIONS } from '../../helpers/utils';
 
 export type Post = {
   data2: {
@@ -19,8 +21,19 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
   const users = useAppData();
-  const [showModal, setShowModal] = useState(false)
 
+  const [showM, setShowM] = useState(false)
+
+
+  const { state, dispatch } = useContext(StateContext);
+
+
+  function handleModal() {
+    dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: true });
+    dispatch({ type: ACTIONS.SET_SELECTED_POST, payload: data2 });
+    // customAction('modal', 'true');
+    // setShowM(true)
+  }
   const {mutateAsync: removePost} = useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
@@ -49,7 +62,7 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
   if (users[1].error) return <p>Error: {users[1].error.message}</p>;
   return (
     <div>
-      {showModal&& <ChangePostForm data2={data2}/>}
+      {/* {showM && <ChangePostForm data2={data2}/>} */}
       <div className=""></div>
       <div className="mt-2 flex items-center justify-between">
         <div className="flex-column items-center justify-between w-full rounded-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">
@@ -75,7 +88,7 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
           </button>
 
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handleModal}
             className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
           >
             Update post

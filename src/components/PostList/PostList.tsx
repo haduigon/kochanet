@@ -1,9 +1,12 @@
 import {
+  useContext,
   useEffect,
 } from 'react';
 import PostElement from '../PostElement';
 import React from 'react';
 import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
+import ChangePostForm from '../ChangePostForm';
+import { StateContext } from '../../context/AppContext';
 
 const PostList = () => {
 
@@ -11,6 +14,7 @@ const PostList = () => {
   const page = useGetCustomParameter();
   const currentPage = page('page') || 1;
   const currentUser = page('userId') || 0;
+    const { state, dispatch } = useContext(StateContext);
 
   useEffect(() => {
     setCurrentPage('page', '1');
@@ -33,6 +37,7 @@ const PostList = () => {
   if (posts.error) return <p>Error: {posts.error.message}</p>;
   return (
     <div>
+      {state.showModal && <ChangePostForm  />}
       {posts.data.map(
         (post: { body: string; id: number; title: string; userId: number }) => {
           return (

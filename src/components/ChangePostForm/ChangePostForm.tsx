@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Input from '../Input';
 import { Post } from '../PostElement/PostElement';
-import { patchPost, useGetCustomParameter } from '../../helpers/utils';
+import { patchPost, useGetCustomParameter, useSetCustomParam, ACTIONS } from '../../helpers/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { StateContext } from '../../context/AppContext';
 
-const ChangePostForm: React.FC<Post> = ({ data2 }) => {
-  const [title, setTitle] = useState(data2?.title)
-  const [body, setBody] = useState(data2?.body)
-    const page = useGetCustomParameter();
+const ChangePostForm= () => {
+  const { state, dispatch } = useContext(StateContext);
+
+  const [title, setTitle] = useState(state.selectedPost.title)
+  const [body, setBody] = useState(state.selectedPost.title)
+  const page = useGetCustomParameter();
   const currentPage = page('page') || 1;
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
+
 
    const {mutateAsync: patchPost2} = useMutation({
     mutationFn: patchPost,
@@ -22,7 +26,7 @@ const ChangePostForm: React.FC<Post> = ({ data2 }) => {
         ['posts', secondKey],
         (prevState: any[]) => {          
           return prevState.map(post => 
-          post.id === data2.id ? {...post, title} : post
+          post.id === state.selectedPost.id ? {...post, title} : post
         );
         }
       );
@@ -30,16 +34,19 @@ const ChangePostForm: React.FC<Post> = ({ data2 }) => {
   });
 
   const handlePatch = async () => {
-    // removePost(data2.id);
+
     patchPost2(title)
+    dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false });
+    
+
   };
   console.log(title, body, 'change from');
   
   return (
     <div className='absolute top-4 left-2 bg-white w-full' >
-      <Input name="title" type="text" onChange={setTitle} value={data2.title} />
-      <Input name="body" type="text" onChange={setBody} value={data2.body}/>
-      <Input name="userId" type="number" value={`${data2.id}`}/>
+      <Input name="title" type="text" onChange={setTitle} value={state.selectedPost.title} />
+      <Input name="body" type="text" onChange={setBody} value={state.selectedPost.body}/>
+      <Input name="post id" type="number" value={`${state.selectedPost.id}`}/>
 
       <button
         onClick={handlePatch}

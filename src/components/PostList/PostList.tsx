@@ -1,57 +1,66 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PostElement from '../PostElement';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import { queries } from '@testing-library/react';
-
-export const fetchPost = async ({ queryKey }: any) => {
-  const [_key, theEnd] = queryKey;
-
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${theEnd}`
-  );
-  if (!response.ok) throw new Error('Network response was not ok');
-  return response.json();
-};
-
-export const fetchUsers = async ({ queryKey }: any) => {
-  const [_key, theEnd] = queryKey;
-
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/users`
-  );
-  if (!response.ok) throw new Error('Network response was not ok');
-  return response.json();
-};
+import { useSearchParams } from "react-router-dom";
+import { fetchPost, fetchUsers, useSetCustomParam, useGetCustomParameter } from '../../helpers/utils';
 
 const PostList = () => {
 
+  const setCurrentPage = useSetCustomParam()
+  const page22 = useGetCustomParameter();
+  const currentPage = page22('page') || 1;
+
+  
+
+  // console.log(page22('page'),'page22');
+  
+  useEffect(() => {
+    setCurrentPage('page', '1');
+  }, [])
   const results = useQueries({
-    queries: [{
-      queryKey: ['post', '?_limit=10&_start=10'],
-      queryFn: fetchPost,
-      refetchInterval: 60000
-    },
+    queries: [
+      {
+        queryKey: ['post', `?_limit=10&_start=${+currentPage * 10}`],
+        queryFn: fetchPost,
+        refetchInterval: 60000,
+      },
       {
         queryKey: ['users'],
         queryFn: fetchUsers,
-    }]
+      },
+    ],
   });
-  
+
   const [posts, users] = results;
   console.log(posts, users, 'posts & users');
   
+  function handlePage() {
+    setCurrentPage('page', String(+currentPage + 1))
+  }
+
   if (posts.isLoading) return <p>Loading...</p>;
   if (posts.error) return <p>Error: {posts.error.message}</p>;
   return (
     <div>
-      {posts.data.map((post: { body: string; id: number; title: string; userId: number; }) => {
-        return (
-          <React.Fragment key={post.id}>
-            <PostElement data2={post} />
-          </React.Fragment>
-        )
-      })}
+      {posts.data.map(
+        (post: { body: string; id: number; title: string; userId: number }) => {
+          return (
+            <React.Fragment key={post.id}>
+              <PostElement data2={post} />
+            </React.Fragment>
+          );
+        }
+      )}
+
+      <div>
+        <button
+          onClick={handlePage}
+          className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+        >
+          Next page
+        </button>
+      </div>
     </div>
   );
 };

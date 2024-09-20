@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchPost } from '../PostList/PostList';
+import { fetchPost } from '../../helpers/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 // import { fetchPost2 } from '../PostList/PostList';

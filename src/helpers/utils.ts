@@ -157,4 +157,5 @@ export const updatePost = async ({ title, body, id }: {
 export enum ACTIONS {
   SET_SHOW_MODAL,
   SET_SELECTED_POST,
+  SET_ERROR_TEXT,
 }

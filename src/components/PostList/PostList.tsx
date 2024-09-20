@@ -7,6 +7,7 @@ import React from 'react';
 import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
 import ChangePostForm from '../ChangePostForm';
 import { StateContext } from '../../context/AppContext';
+import ErrorModal from '../ErrorModal';
 
 const PostList = () => {
 
@@ -37,7 +38,8 @@ const PostList = () => {
   if (posts.error) return <p>Error: {posts.error.message}</p>;
   return (
     <div>
-      {state.showModal && <ChangePostForm  />}
+      {state.showModal && <ChangePostForm />}
+      {state.errorText.length > 0 && <ErrorModal />}
       {posts.data.map(
         (post: { body: string; id: number; title: string; userId: number }) => {
           return (

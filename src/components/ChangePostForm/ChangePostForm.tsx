@@ -8,12 +8,30 @@ import { StateContext } from '../../context/AppContext';
 const ChangePostForm= () => {
   const { state, dispatch } = useContext(StateContext);
 
-  const [title, setTitle] = useState(state.selectedPost.title)
-  const [body, setBody] = useState(state.selectedPost.title)
+  const originalTitle = state.selectedPost.title;
+  const originalBody = state.selectedPost.body;
+
+  const [title, setTitle] = useState(originalTitle);
+  const [body, setBody] = useState(originalBody);
   const page = useGetCustomParameter();
   const currentPage = page('page') || 1;
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
+
+  const detectChanges = () => {
+    let changedFields = [];
+
+    if (title !== originalTitle) {
+      changedFields.push('title');
+    }
+
+    if (body !== originalBody) {
+      changedFields.push('body');
+    }
+
+    return changedFields;
+  };
+
 
 
    const {mutateAsync: patchPost2} = useMutation({
@@ -26,7 +44,7 @@ const ChangePostForm= () => {
         ['posts', secondKey],
         (prevState: any[]) => {          
           return prevState.map(post => 
-          post.id === state.selectedPost.id ? {...post, title} : post
+          post.id === state.selectedPost.id ? {...post, title, body} : post
         );
         }
       );
@@ -34,12 +52,17 @@ const ChangePostForm= () => {
   });
 
   const handlePatch = async () => {
-
-    patchPost2({
+      console.log(detectChanges(), 'changes');
+    const changes = detectChanges();  
+    
+    if (changes.length === 1) {
+      patchPost2({
       id: `${state.selectedPost.id}`,
-      name: 'title',
-      value: title,
+      name: changes[0] as 'title' | 'body',
+      value: changes[0] === 'title' ? title : body,
     })
+    }
+    
     dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false });
     
 

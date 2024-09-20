@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchPost } from '../PostList/PostList';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { fetchPost2 } from '../PostList/PostList';
+// import { fetchPost2 } from '../PostList/PostList';
 
 type Props = {
   data2: {
@@ -38,23 +38,16 @@ const PostElement: React.FC<Props> = ({ data2 }) => {
 
   const mutation = useMutation({
     mutationFn: deletePost,
-    onSettled: (data: any, error: any, variables: any, context: any) => {
-      // console.log(data, error, variables, context, 'datasettled post elem');
+    onSuccess: () => {
       queryClient.setQueryData(
-        ['post'],
-        [
-          {
-            body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
-            id: 1,
-            title:
-              'sunt aut facere repellat provident occaecati excepturi optio reprehenderit',
-            userId: 1,
-          },
-        ]
+        ['post', '?_limit=10&_start=10'],
+        (prevState: any[]) => {
+          // console.log(prevState.filter(elem => elem.id !== data2.id), 'prevstate');
+          return prevState.filter(elem => elem.id !== data2.id);
+        }
       );
     },
   });
-
 
   const handleDelete = () => {
     mutation.mutate(data2.id);

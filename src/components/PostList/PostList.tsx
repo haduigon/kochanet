@@ -10,6 +10,7 @@ import ChangePostForm from '../ChangePostForm';
 import { StateContext } from '../../context/AppContext';
 // import ErrorModal from '../ErrorModal';
 import CreatePostForm from '../CreatePostForm';
+import ErrorModal from '../ErrorModal';
 
 const PostList = () => {
   const setCurrentPage = useSetCustomParam();
@@ -41,7 +42,7 @@ const PostList = () => {
     <div>
       {state.showModal && <ChangePostForm />}
       {state.newPost && <CreatePostForm />}
-      {state.errorText.length > 0 && <CreatePostForm />}
+      {state.errorText.length > 0 && <ErrorModal />}
       {posts.data.map(
         (post: { body: string; id: number; title: string; userId: number }) => {
           return (

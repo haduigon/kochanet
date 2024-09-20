@@ -57,8 +57,6 @@ const ChangePostForm = () => {
   const { mutateAsync: updatePost2 } = useMutation({
     mutationFn: updatePost,
     onSuccess: () => {
-      console.log('updated');
-
       const secondKey =
         +currentUser > 0
           ? `?userId=${currentUser}`
@@ -75,9 +73,12 @@ const ChangePostForm = () => {
   });
 
   const handlePatch = async () => {
-    console.log(detectChanges(), 'changes');
+    // console.log(detectChanges(), 'changes');
     const changes = detectChanges();
-
+    if (title.length === 0 || body.length === 0) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: `Any filed cant be empty` });
+      // throw Error('Any filed cant be empty');
+    }
     if (changes.length === 1) {
       patchPost2({
         id: `${state.selectedPost.id}`,
@@ -115,6 +116,12 @@ const ChangePostForm = () => {
         className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
       >
         Update post
+      </button>
+      <button
+        onClick={() => dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false })}
+        className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+      >
+        Cancel
       </button>
     </div>
   );

@@ -4,6 +4,7 @@ import Input from '../Input';
 import { createUserEmailPassword, logInWithEmailAndPassword } from '../../firebase/firebase';
 import { StateContext } from '../../context/AppContext';
 import { ACTIONS } from '../../helpers/utils';
+import ErrorModal from '../ErrorModal';
 
 const LoginForm = () => {
   const { state, dispatch } = useContext(StateContext);
@@ -16,7 +17,12 @@ const LoginForm = () => {
   });
 
   function checkCrids() {
-      if (!cridentials.email.match(regexp)) {
+    if (cridentials.password.length < 6 && !cridentials.email.match(regexp)) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your email and pass length >= 6' });
+      throw Error('Everything goes wrong');
+    }
+
+    if (!cridentials.email.match(regexp)) {
         dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your email' });
         throw Error('Email error');
     }
@@ -26,10 +32,6 @@ const LoginForm = () => {
       throw Error('Pass error');
     }
 
-    if (cridentials.password.length < 6 && !cridentials.email.match(regexp)) {
-      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your email and pass length >= 6' });
-      throw Error('Everything goes wrong');
-    }
   }
 
   function handleEmailChange(event: string) {
@@ -38,7 +40,7 @@ const LoginForm = () => {
         ...prev,
         email: event
       }
-    })
+    });
   }
 
   function handlePassChange(event: string) {
@@ -47,7 +49,7 @@ const LoginForm = () => {
         ...prev,
         password: event
       }
-    })
+    });
   }
 
   function handleLogin() {
@@ -59,12 +61,10 @@ const LoginForm = () => {
     checkCrids();
     createUserEmailPassword(cridentials.email, cridentials.password);
   }
-
-  console.log(cridentials);
   
   return (
     <div>
-
+      {state.errorText.length > 0 && <ErrorModal />} 
       <div className="space-y-6 mt-2 ml-2 mr-2 sm:mx-auto  sm:max-w-sm">
         <Input name="email" type="email" onChange={handleEmailChange} value={cridentials.email} />
       </div>

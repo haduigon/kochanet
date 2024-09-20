@@ -21,6 +21,8 @@ const CreatePostForm = () => {
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
 
+  const [localTrigger, setLocalTragger] = useState(false);
+
   const newP = {
     title: title,
     body: body,
@@ -43,10 +45,17 @@ const CreatePostForm = () => {
   });
 
   const handlePatch = async () => {
+    if (title.length === 0 || body.length === 0) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: `Any filed cant be empty` });
+      throw Error('Any filed cant be empty');
+    }
     addPost(newP);
 
     dispatch({ type: ACTIONS.SET_NEW_POST, payload: false });
   };
+
+  console.log(state.newPost);
+  
 
   return (
     <div className="absolute top-4 left-2 bg-white w-full">
@@ -69,6 +78,12 @@ const CreatePostForm = () => {
         className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
       >
         Add post
+      </button>
+      <button
+        onClick={() => dispatch({ type: ACTIONS.SET_NEW_POST, payload: false })}
+        className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+      >
+        Cancel
       </button>
     </div>
   );

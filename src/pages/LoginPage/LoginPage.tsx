@@ -1,5 +1,5 @@
 import Input from "../../components/Input";
-import Button from "../../components/Button";
+// import Button from "../../components/Button";
 import LoginForm from "../../components/LoginForm";
 import SocialLoginButton from "../../components/SocialLoginButton";
 import { useNavigate } from 'react-router-dom';
@@ -19,10 +19,10 @@ const LoginPage = () => {
   })
 
   return (
-    <div className="flex flex-row justify-center items-center">
+    <div className="flex flex-column justify-center items-center min-h-screen ">
       <div className="w-full flex-column">
         <div className="w-full">
-          <div className="flex flex-row space-x-6 mt-2 ml-2 mr-2 sm:mx-auto  sm:max-w-sm  items-center justify-center">
+          <div className="flex flex-row space-x-6 mt-2 ml-2 mr-2 sm:mx-auto  sm:max-w-sm  items-center justify-between">
              <SocialLoginButton name="google" />
              <SocialLoginButton name="facebook" />
              <SocialLoginButton name="github" />

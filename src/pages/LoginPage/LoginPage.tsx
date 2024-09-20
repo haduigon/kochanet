@@ -10,7 +10,7 @@ const LoginPage = () => {
 
   const listenAuth = onAuthStateChanged(getAuth(), (user) => {
     if (user) {
-      navigate('/posts')
+      navigate('/posts');
     }
 
     return () => {

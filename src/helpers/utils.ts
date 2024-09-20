@@ -1,21 +1,19 @@
 import { useSearchParams } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 
-export const useAppData = (
-  urlEnd: string = `?_limit=10&_start=0`
-) => {
-  // console.log(urlEnd, 'urlEnd utils');
-  
+export const useAppData = (urlEnd: string = `?_limit=10&_start=0`) => {
   return useQueries({
     queries: [
       {
         queryKey: ['posts', urlEnd],
         queryFn: fetchPost,
         refetchInterval: 60000,
+        staleTime: 60000,
       },
       {
         queryKey: ['users'],
         queryFn: fetchUsers,
+        // staleTime: 300000,
       },
       {
         queryKey: ['userPosts', urlEnd],
@@ -83,4 +81,27 @@ export const fetchUsersPosts = async ({ queryKey }: any) => {
   );
   if (!response.ok) throw new Error('Network response was not ok');
   return response.json();
+};
+
+export const createPost = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    method: 'POST',
+    body: JSON.stringify({
+      title: 'foo',
+      body: 'bar',
+      userId: 1,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete post');
+  }
+
+  const resp = await response.json();
+  console.log(resp);
+  
+  return resp;
 };

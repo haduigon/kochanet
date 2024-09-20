@@ -4,6 +4,7 @@ import {
 import PostElement from '../PostElement';
 import React from 'react';
 import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
+import { useQueryClient } from '@tanstack/react-query';
 
 const PostList = () => {
 
@@ -24,13 +25,10 @@ const PostList = () => {
   );
 
   const [posts] = results;
-  
+ 
   function handlePage() {
     setCurrentPage('page', String(+currentPage + 1))
   }
-
-  console.log(currentUser, 'user in list');
-  
 
   if (posts.isLoading) return <p>Loading...</p>;
   if (posts.error) return <p>Error: {posts.error.message}</p>;

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+} from 'react';
 import PostElement from '../PostElement';
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import { useSearchParams } from "react-router-dom";
-import { fetchPost, fetchUsers, useSetCustomParam, useGetCustomParameter } from '../../helpers/utils';
+import { useSetCustomParam, useGetCustomParameter, useAppData } from '../../helpers/utils';
 
 const PostList = () => {
 
@@ -11,29 +11,13 @@ const PostList = () => {
   const page22 = useGetCustomParameter();
   const currentPage = page22('page') || 1;
 
-  
-
-  // console.log(page22('page'),'page22');
-  
   useEffect(() => {
     setCurrentPage('page', '1');
-  }, [])
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ['post', `?_limit=10&_start=${+currentPage * 10}`],
-        queryFn: fetchPost,
-        refetchInterval: 60000,
-      },
-      {
-        queryKey: ['users'],
-        queryFn: fetchUsers,
-      },
-    ],
-  });
+  }, []);
 
-  const [posts, users] = results;
-  console.log(posts, users, 'posts & users');
+  const results = useAppData(`${currentPage}`)
+
+  const [posts] = results;
   
   function handlePage() {
     setCurrentPage('page', String(+currentPage + 1))

@@ -129,6 +129,31 @@ export const patchPost = async ({ name, value, id }: {
   return resp;
 };
 
+export const updatePost = async ({ title, body, id }: {
+  title: string; body: string, id: string
+}) => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: title,
+      body: body,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error('Failed to delete post');
+  }
+
+  const resp = await response.json();
+  console.log(resp, 'patchpost');
+  
+  return resp;
+};
+
 export enum ACTIONS {
   SET_SHOW_MODAL,
   SET_SELECTED_POST,

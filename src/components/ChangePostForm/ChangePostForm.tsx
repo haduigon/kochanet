@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import Input from '../Input';
-import { Post } from '../PostElement/PostElement';
-import { patchPost, useGetCustomParameter, useSetCustomParam, ACTIONS } from '../../helpers/utils';
+import { patchPost, useGetCustomParameter, ACTIONS, updatePost } from '../../helpers/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { StateContext } from '../../context/AppContext';
 
@@ -32,11 +31,28 @@ const ChangePostForm= () => {
     return changedFields;
   };
 
-
-
-   const {mutateAsync: patchPost2} = useMutation({
+   const { mutateAsync: patchPost2 } = useMutation({
     mutationFn: patchPost,
     onSuccess: () => {
+      const secondKey = +currentUser > 0
+        ? `?userId=${currentUser}`
+        : `?_limit=10&_start=${(+currentPage - 1) * 10}`
+      queryClient.setQueryData(
+        ['posts', secondKey],
+        (prevState: any[]) => {          
+          return prevState.map(post => 
+          post.id === state.selectedPost.id ? {...post, title, body} : post
+        );
+        }
+      );
+    },
+  });
+
+  const { mutateAsync: updatePost2 } = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      console.log('updated');
+      
       const secondKey = +currentUser > 0
         ? `?userId=${currentUser}`
         : `?_limit=10&_start=${(+currentPage - 1) * 10}`
@@ -57,17 +73,22 @@ const ChangePostForm= () => {
     
     if (changes.length === 1) {
       patchPost2({
-      id: `${state.selectedPost.id}`,
-      name: changes[0] as 'title' | 'body',
-      value: changes[0] === 'title' ? title : body,
-    })
+        id: `${state.selectedPost.id}`,
+        name: changes[0] as 'title' | 'body',
+        value: changes[0] === 'title' ? title : body,
+      });
+    } else {
+      updatePost2({
+        id: `${state.selectedPost.id}`,
+        title: title,
+        body: body,
+      })
     }
     
     dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false });
     
 
   };
-  console.log(title, body, 'change from');
   
   return (
     <div className='absolute top-4 left-2 bg-white w-full' >

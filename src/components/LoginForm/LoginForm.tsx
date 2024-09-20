@@ -1,13 +1,36 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../Button';
 import Input from '../Input';
 import { createUserEmailPassword, logInWithEmailAndPassword } from '../../firebase/firebase';
+import { StateContext } from '../../context/AppContext';
+import { ACTIONS } from '../../helpers/utils';
 
 const LoginForm = () => {
+  const { state, dispatch } = useContext(StateContext);
+
+  const regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   const [cridentials, setCridentials] = useState({
     email: '',
     password: '',
   });
+
+  function checkCrids() {
+      if (!cridentials.email.match(regexp)) {
+        dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your email' });
+        throw Error('Email error');
+    }
+
+    if (cridentials.password.length < 6) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Password should be at least 6 symbols' });
+      throw Error('Pass error');
+    }
+
+    if (cridentials.password.length < 6 && !cridentials.email.match(regexp)) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your email and pass length >= 6' });
+      throw Error('Everything goes wrong');
+    }
+  }
 
   function handleEmailChange(event: string) {
     setCridentials(prev => {
@@ -28,18 +51,17 @@ const LoginForm = () => {
   }
 
   function handleLogin() {
-    logInWithEmailAndPassword(cridentials.email, cridentials.password)
+    checkCrids();
+    logInWithEmailAndPassword(cridentials.email, cridentials.password);
   }
 
   function handleCreateUser() {
-    createUserEmailPassword(cridentials.email, cridentials.password)
+    checkCrids();
+    createUserEmailPassword(cridentials.email, cridentials.password);
   }
 
   console.log(cridentials);
   
-
-  let regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   return (
     <div>
 

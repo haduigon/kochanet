@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useGetCustomParameter } from '../../helpers/utils';
+import { deletePost } from '../../helpers/utils';
 
 type Props = {
   data2: {
@@ -8,25 +9,6 @@ type Props = {
     title: string;
     userId: number;
   };
-};
-
-const deletePost = async (postId: number) => {
-  // console.log(postId, 'post element delete post func');
-
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${postId}`,
-    {
-      method: 'DELETE',
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to delete post');
-  }
-
-  // const result = await response.json();
-
-  return postId;
 };
 
 const PostElement: React.FC<Props> = ({ data2 }) => {

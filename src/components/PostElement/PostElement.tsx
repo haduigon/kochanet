@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAppData, useGetCustomParameter } from '../../helpers/utils';
 import { deletePost } from '../../helpers/utils';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { StateContext } from '../../context/AppContext';
 import { ACTIONS } from '../../helpers/utils';
+import DeleteModal from '../DeleteModal';
 
 export type Post = {
   data2: {
@@ -20,6 +21,7 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
   const queryClient = useQueryClient();
   const currentUser = page('userId') || 0;
   const users = useAppData();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const { dispatch } = useContext(StateContext);
 
@@ -43,9 +45,9 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
     },
   });
 
-  const handleDelete = async () => {
-    removePost(data2.id);
-  };
+  // const handleDelete = async () => {
+  //   removePost(data2.id);
+  // };
 
   if (users[1].isLoading) return <p>Loading...</p>;
   if (users[1].error) return <p>Error: {users[1].error.message}</p>;
@@ -61,12 +63,13 @@ const PostElement: React.FC<Post> = ({ data2 }) => {
     copy.find((elem: { id: number }) => elem.id === data2.userId);
   return (
     <div>
+      {showConfirm && <DeleteModal id={data2.id} onClick={setShowConfirm}/>}
       <div className=""></div>
       <div className="ml-2 mr-2 mt-2 flex items-center justify-between">
         <div className="flex-column items-center justify-between w-full rounded-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">
           <div className="ml-2 flex">
             <button
-              onClick={handleDelete}
+              onClick={() => setShowConfirm(true)}
               className="bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
             >
               Delete post

@@ -29,6 +29,8 @@ async function logInWithEmailAndPassword(email: string, password: string) {
     const login = await signInWithEmailAndPassword(auth, email, password);
     return JSON.parse(JSON.stringify(login));
   } catch (error) {
+    console.log(error, 'firebase');
+    
     return error;
   }
 }

@@ -52,14 +52,23 @@ const LoginForm = () => {
     });
   }
 
-  function handleLogin() {
+  async function handleLogin() {
     checkCrids();
-    logInWithEmailAndPassword(cridentials.email, cridentials.password);
+    const log = await logInWithEmailAndPassword(cridentials.email, cridentials.password);
+    if (!log.hasOwnProperty('user')) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your crids' });
+      throw Error('Crids error');
+    }
+    
   }
 
-  function handleCreateUser() {
+  async function handleCreateUser() {
     checkCrids();
-    createUserEmailPassword(cridentials.email, cridentials.password);
+    const log = await createUserEmailPassword(cridentials.email, cridentials.password);
+    if (!log.hasOwnProperty('user')) {
+      dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: 'Please, check your crids' });
+      throw Error('Crids error');
+    }
   }
   
   return (

@@ -18,12 +18,6 @@ In progress
 
 Feel free to suggest any improvements.
 
-[![GitHub license](https://img.shields.io/github/license/haduigon/kochanet)](https://github.com/haduigon/kochanet/blob/master/LICENSE)
-
-[![GitHub stars](https://img.shields.io/github/stars/haduigon/kochanet](https://github.com/haduigon/kochanet/stargazers)
-
-[![GitHub issues](https://img.shields.io/github/issues/haduigon/kochanet)](https://github.com/haduigon/kochanet/issues)
-
 [![GitHub forks](https://img.shields.io/github/forks/haduigon/kochanet)](https://github.com/haduigon/kochanet/network)
 
 # _Screenshots are bellow:_

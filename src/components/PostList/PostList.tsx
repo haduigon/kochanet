@@ -48,7 +48,7 @@ const PostList = () => {
   if (posts.error) return <p>Error: {posts.error.message}</p>;
   return (
     <div>
-      {state.showModal && <ChangePostForm />}
+      <div className="flex justify-center w-full">{state.showModal && <ChangePostForm />}</div>
       {state.newPost && <CreatePostForm />}
       {state.errorText.length > 0 && <ErrorModal />}
       {posts.data.map(

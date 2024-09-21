@@ -73,11 +73,10 @@ const ChangePostForm = () => {
   });
 
   const handlePatch = async () => {
-    // console.log(detectChanges(), 'changes');
     const changes = detectChanges();
     if (title.length === 0 || body.length === 0) {
       dispatch({ type: ACTIONS.SET_ERROR_TEXT, payload: `Any filed cant be empty` });
-      // throw Error('Any filed cant be empty');
+      throw Error('Any filed cant be empty');
     }
     if (changes.length === 1) {
       patchPost2({
@@ -96,7 +95,9 @@ const ChangePostForm = () => {
   };
 
   return (
-    <div className="absolute top-4 left-2 bg-white w-full">
+    <div
+      className="w-full absolute top-4 left-1/2 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-lg p-6 rounded-lg ring-1 ring-gray-300 z-50 transform -translate-x-1/2"
+    >
       <Input
         name="title"
         type="text"
@@ -113,13 +114,13 @@ const ChangePostForm = () => {
 
       <button
         onClick={handlePatch}
-        className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+        className="mt-2 ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
       >
         Update post
       </button>
       <button
         onClick={() => dispatch({ type: ACTIONS.SET_SHOW_MODAL, payload: false })}
-        className="ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
+        className="mt-2 ml-2 bg-blue-500 text-white text-sm font-semibold py-1 px-3 rounded hover:bg-blue-600"
       >
         Cancel
       </button>

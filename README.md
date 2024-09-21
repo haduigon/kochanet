@@ -1,46 +1,87 @@
-# Getting Started with Create React App
+**Kochanet**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# _Description:_
 
-## Available Scripts
+It is a test task. Simply todo app with free api, login and registration via Firebase. Styles done with Tailwind only. I think Tailwind is a reincarnation af a Bootstrap. Or a younger sibling. I used the react-query, it`s quite nice and usefull. I also used react-router and react-context. Created a few customHooks.
 
-In the project directory, you can run:
+# [Desin reference](https://dribbble.com/shots/20448736-TimeTracker-Sign-Up-Sign-In-Page)
 
-### `npm start`
+Demos: 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# [Demolink GitHub](https://haduigon.github.io/kochanet/)
+# [Demolink Vercel](https://kochanet.vercel.app/)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+# _Status:_
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In progress
 
-### `npm run build`
+Feel free to suggest any improvements.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[![GitHub license](https://img.shields.io/github/license/haduigon/kochanet)](https://github.com/haduigon/kochanet/blob/master/LICENSE)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+[![GitHub stars](https://img.shields.io/github/stars/haduigon/kochanet](https://github.com/haduigon/kochanet/stargazers)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[![GitHub issues](https://img.shields.io/github/issues/haduigon/kochanet)](https://github.com/haduigon/kochanet/issues)
 
-### `npm run eject`
+[![GitHub forks](https://img.shields.io/github/forks/haduigon/kochanet)](https://github.com/haduigon/kochanet/network)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# _Screenshots are bellow:_
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<details>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+</details>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Technologies list:
 
-## Learn More
+[![React](https://img.shields.io/badge/React-18.3.1-green)](https://react.dev/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-green)](https://www.typescriptlang.org/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[![React-router-dom](https://img.shields.io/badge/React%20Router%20Dom-6.26.2-yellow)](https://reactrouter.com/en/main)
+
+[![React Query](https://img.shields.io/badge/React%20Query-5.56.2-grey)](https://tanstack.com/)
+
+[![Firebase](https://img.shields.io/badge/Firebase-10.13.2-purple)](https://firebase.google.com/)
+
+[![Tailwind](https://img.shields.io/badge/Tailwind-3.4.12-orange)](https://tailwindcss.com/)
+
+
+# Kochanet features:
+
+- Firebase auth via Email, Facebook, Google and Github
+
+- React-query as fetch and cashe manager
+
+- Styled with tailwind only
+
+- Using free jsonplaceholder api
+
+- Authorization, creating profile, logout,filtering, adding, deleting and patch/put todo updating is done. 
+
+
+# _Usage as always is very simple:_
+
+_npm i_
+
+_npm start_
+
+# Reflection
+
+I did not keep the url params after page renew
+
+I hardcoded id and userId when adding new post, as far as I know length of whole array is 100 elems and it is only for 60 sec, real data dont changes, so after refresh data will be the same
+
+I did not add the firebase register via ggl / fb / gth beacause de facto it is the same with login via socials network, in both cases acc is created, difference is mostly in the customer flow, so to save time, i skipped
+
+I followed this simple design to meet deadlines
+
+I know you like details but i did not manage to do them all in this deadline but tried to do my best
+
+It was very interesting two days with react-query.
+
+Main mistakes / disadvantages are bellow : 
+
+Design is very simple, validation is madden very commonly, not customized, not bestvoptimization probably, issues with naming, etc.
+
+So, thank you a lot, keep in touch )

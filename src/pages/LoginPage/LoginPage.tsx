@@ -33,7 +33,7 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="w-full hidden lg:block">
-        <LoginForm />
+        <div className="text-4xl text-indigo-600 font-bold">KOCHANET BLOG</div>
       </div>
     </div>
   )

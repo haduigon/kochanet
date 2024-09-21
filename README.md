@@ -29,7 +29,8 @@ Feel free to suggest any improvements.
 # _Screenshots are bellow:_
 
 <details>
-
+<img width="1119" alt="kochanet" src="https://github.com/user-attachments/assets/72ed90f7-de54-4cbe-8d11-2ce087c164d5">
+<img width="895" alt="kochanet1" src="https://github.com/user-attachments/assets/a9ae24aa-c387-46bc-8728-4bcce1268174">
 </details>
 
 # Technologies list:
@@ -67,6 +68,8 @@ _npm i_
 _npm start_
 
 # Reflection
+
+I have tried to follow all the requirement but to meet the deadline
 
 I did not keep the url params after page renew
 
